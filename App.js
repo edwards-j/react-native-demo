@@ -1,33 +1,27 @@
-import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import React, { Component } from "react";
+import { StyleSheet, View } from "react-native";
 
-
-
+import PlaceInput from "./src/components/PlaceInput/PlaceInput";
+import PlaceList from "./src/components/PlaceList/PlaceList";
 
 export default class App extends Component {
   state = {
-    palceName: ""
-  }
+    places: []
+  };
 
-  placeNameChangedHandler = val => {
-    this.setState({ placeName: val.value })
-  }
+  placeAddedHandler = placeName => {
+    this.setState(prevState => {
+      return {
+        places: prevState.places.concat(placeName)
+      };
+    });
+  };
 
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.inputContainer}>
-          <TextInput
-          style={styles.placeInput}
-            placeholder={"An awesome place"}
-            value={this.state.placeName}
-            onChangeText={this.placeNameChangedHandler}
-          />
-          <Button
-          title="Add"
-          style={styles.placeButton}
-          />
-        </View>
+        <PlaceInput onPlaceAdded={this.placeAddedHandler} />
+        <PlaceList places={this.state.places} />
       </View>
     );
   }
@@ -37,19 +31,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 26,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-  inputContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  placeInput: {
-    width: "70%"
-  },
-  placeButton: {
-    width: "30%"
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "flex-start"
   }
 });
